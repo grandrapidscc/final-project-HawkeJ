@@ -39,7 +39,7 @@ namespace Wizert_Remaster {
             ExecuteWizertTurn();
         }
 
-        private void ExecuteWizertTurn() {
+        /* private void ExecuteWizertTurn() {
             if(Wizert.IsDead)
                 return;
 
@@ -84,6 +84,7 @@ namespace Wizert_Remaster {
 
             } while (willReprompt);
         }
+        */
 
         private bool WillRestart()
         {
