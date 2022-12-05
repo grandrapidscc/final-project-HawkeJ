@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Wizert_Remaster {
-    class Program {
-        static void Main(string[] args) {
+namespace Wizert_Throwback
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
             Game game = new Game();
             game.Run();
         }

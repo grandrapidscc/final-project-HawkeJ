@@ -4,75 +4,77 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Wizert_Remaster {
-    class Game {
+namespace Wizert_Throwback
+{
+    class Game
+    {
         private Dungeon dungeon;
         private Wizert wizert;
 
-        public Game() {
-
+        public Game()
+        {
         }
 
-        private void Initialize() {
+       private void Initialize()
+        {
             dungeon = new Dungeon();
-            wizert = new Wizert(0);
+            wizert = new Wizert(dungeon.InitialWizertRoom);
+
         }
 
-        private void ResetVariables(bool resetRooms) {
+        private void ResetVariables(bool resetRooms)
+        {
             dungeon.ResetDungeon(resetRooms);
-            wizert = new Wizert(0);
+            wizert = new Wizert(dungeon.InitialWizertRoom);
         }
 
-        public void Run() {
+        public void Run()
+        {
             Initialize();
 
-            do {
+            do
+            {
+                wizert.CheckForItems();
                 Console.WriteLine();
-
-                while (Wizert.IsAlive && !Wizert.HasWon) {
+                while (Wizert.IsAlive && !Wizert.HasWon)
+                {
                     Update();
                 }
+
             } while (WillRestart());
+
         }
 
-        private void Update() {
+        private void Update()
+        {
             ExecuteWizertTurn();
         }
 
-        /* private void ExecuteWizertTurn() {
-            if(Wizert.IsDead)
+        private void ExecuteWizertTurn()
+        {
+            if (Wizert.IsDead)
                 return;
 
-            string playerInput;
+            string wizertInput;
             bool willReprompt = false;
-            
+
             do
             {
-                Console.Write("North, East, South, or West?");
-                playerInput = Console.ReadLine();
+                Console.WriteLine("The darkness feels suffocating...");
+                wizert.ListConnectedRooms();
+                Console.Write("Will you (p)ress on, Wizert? Or (g)ive up? ");
+                wizertInput = Console.ReadLine();
 
-                switch (playerInput.ToLower())
+                switch (wizertInput.ToLower())
                 {
-
-                    case "n":
+                    case "p":
                         wizert.Move();
-                        wizert.CheckFor(enemy);
+                        wizert.CheckForItems();
                         willReprompt = false;
                         break;
-                    case "e":
-                        wizert.Move();
-                        wizert.CheckFor(enemy);
-                        willReprompt = false;
-                        break;
-                    case "s":
-                        wizert.Move();
-                        wizert.CheckFor(enemy);
-                        willReprompt = false;
-                        break;
-                    case "w":
-                        wizert.Move();
-                        wizert.CheckFor(enemy);
-                        willReprompt = false;
+                    case "g":
+                        Console.WriteLine("Until next time...");
+                        Environment.Exit(0);
                         break;
                     default:
                         Console.WriteLine("Invalid command\n");
@@ -84,18 +86,18 @@ namespace Wizert_Remaster {
 
             } while (willReprompt);
         }
-        */
 
         private bool WillRestart()
         {
             bool invalidResponse = false;
             bool willRestart = false;
-        
-            string endingText = Wizert.HasWon ? "Congratulations! You escaped!" : "Oh no! You died!";
+            bool resetItemLocations = false;
+
+            string endingText = Wizert.HasWon ? "You've made it out alive!" : "Game Over";
             Console.WriteLine(endingText);
             do
             {
-                Console.Write("Play Again? (y/n):");
+                Console.Write("Play again? (y/n): ");
                 string restartResponse = Console.ReadLine();
                 switch (restartResponse.ToLower())
                 {
@@ -113,6 +115,37 @@ namespace Wizert_Remaster {
                 }
 
             } while (invalidResponse);
+
+            do
+            {
+                Console.Write("Reset door location (y/n):");
+                string restartResponse = Console.ReadLine();
+                switch (restartResponse.ToLower())
+                {
+                    case "y":
+                        invalidResponse = false;
+                        resetItemLocations = true;
+                        break;
+                    case "n":
+                        invalidResponse = false;
+                        resetItemLocations = false;
+                        break;
+                    default:
+                        invalidResponse = true;
+                        break;
+                }
+
+            } while (invalidResponse);
+
+            ResetVariables(resetItemLocations);
+
+            return willRestart;
         }
+    }
+
+    static class GameConstants
+    {
+        public const int WORLD_SIZE = 25;
+        public static readonly NoItems NO_ITEMS = new NoItems();
     }
 }
