@@ -37,8 +37,8 @@ namespace Wizert_Throwback
 
         public void UseItem(Wizert wizert)
         {
-            Console.WriteLine("Nice! You found a health potion! You gain 10HP");
-            
+            wizert.WizertHP = wizert.WizertHP + hpAdd;
+            Console.WriteLine("You found a health potion! You gain " + hpAdd + "hp for a total of " + wizert.WizertHP + "hp!");
         }
 
         public bool IsBlank()
@@ -48,7 +48,7 @@ namespace Wizert_Throwback
 
         public void PrintMessage()
         {
-            Console.WriteLine("I think there's a health potion nearby...");
+            Console.WriteLine("Your heart beats loudly as you sense a health potion nearby...");
         }
     }
 
@@ -58,7 +58,8 @@ namespace Wizert_Throwback
 
         public void UseItem(Wizert wizert)
         {
-            Console.WriteLine("Nice! You found a mana potion! You gain 20MP");
+            wizert.WizertMP = wizert.WizertMP + mpAdd;
+            Console.WriteLine("You found a mana potion! You gain " + mpAdd + "mp for a total of " + wizert.WizertMP + "mp!");
         }
 
         public bool IsBlank()
@@ -68,7 +69,7 @@ namespace Wizert_Throwback
 
         public void PrintMessage()
         {
-            Console.WriteLine("I think there's a mana potion nearby...");
+            Console.WriteLine("Your muscles ache as you sense a mana potion nearby...");
         }
     }
 
@@ -89,7 +90,7 @@ namespace Wizert_Throwback
 
         public void PrintMessage()
         {
-            Console.WriteLine("You feel a nearby draft...");
+            Console.WriteLine("As you look around, you feel a nearby draft...");
         }
     }
 }

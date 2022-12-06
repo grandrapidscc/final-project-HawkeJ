@@ -6,20 +6,10 @@ using System.Threading.Tasks;
 
 namespace Wizert_Throwback
 {
-    class Encounters
+    /*class Encounters
     {
-        public static void Encounter(string Name, int WizertHP, int WizertMP)
+        public static void Encounter()
         {
-            string name = "";
-            int hp = 0;
-            int mp = 0;
-            
-            name = Name;
-            hp = WizertHP;
-            mp = WizertMP;
-            
-            
-
             while (hp > 0)
             {
                 Console.WriteLine("---------------------");
@@ -35,37 +25,40 @@ namespace Wizert_Throwback
                     case "f":
                         if (mp > 0)
                         {
-                            Console.WriteLine("");
+                            enemies.HP = enemies.HP - wizert.FireballHP;
+                            Console.Writeline("You cast Fireball at the " + enemies.Name + " for " + wizert.FireballMP + "mp! They're now at " + enemies.HP + "hp!")
                         }
                         else
                         {
-                            Console.WriteLine("");
+                            Console.WriteLine("Oh No! You don't have enough mp to cast Fireball!");
                         }
                         break;
                     case "h":
                         if (mp > 0)
                         {
-                            Console.WriteLine("");
+                            wizert.WizertHP = wizert.WizertHP + wizert.Heal;
+                            Console.WriteLine("You cast Heal for " + wizert.Heal + "mp! Your health is now at " + wizert.WizertHP + "hp!");
                         }
                         else
                         {
-                            Console.WriteLine("");
+                            Console.WriteLine("Oh No! You don't have enough mp to cast Heal!");
                         }
                         break;
                     case "r":
-                        if (mp > 0)
+                        if (rand.Next(0, 2) == 0)
                         {
-                            Console.WriteLine("");
+                            Console.WriteLine("Your enemy is too fast! You can't escape!");
                         }
                         else
                         {
-                            Console.WriteLine("");
+                            Console.WriteLine("You out maneuver " + Enemy + " and run out of the room!");
                         }
                         break;
                     default:
+                        willReprompt = true;
                         break;
                 }
             }
         }
-    }
+    }*/
 }

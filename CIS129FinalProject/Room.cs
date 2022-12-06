@@ -9,6 +9,7 @@ namespace Wizert_Throwback
     {
         public int Id { get; private set; }
         public Items Item { get; set; }
+        public Enemies Enemy { get; set; }
         public List<Room> AdjList { get; private set; }
         public bool isVisited { get; set; }
 
@@ -16,6 +17,7 @@ namespace Wizert_Throwback
         {
             Id = id;
             Item = GameConstants.NO_ITEMS;
+            Enemy = GameConstants.NO_ENEMIES;
             AdjList = new List<Room>(6);
             isVisited = false;
         }
@@ -49,6 +51,14 @@ namespace Wizert_Throwback
                 return true;
         }
 
+        public bool HasEnemy()
+        {
+            if (Enemy.IsBlank())
+                return false;
+            else 
+                return true;
+        }
+
         public void PrintConnectedRooms()
         {
             for (int i = 0; i < AdjList.Count; i++)
@@ -66,6 +76,10 @@ namespace Wizert_Throwback
                 {
                     AdjList[i].Item.PrintMessage();
                 }
+                else if (AdjList[i].HasEnemy())
+                {
+                    AdjList[i].Enemy.PrintMessage();
+                }
             }
         }
 
@@ -77,11 +91,22 @@ namespace Wizert_Throwback
                 {
                     return true;
                 }
-
             }
-
             return false;
         }
+
+        public bool CheckAdjListEnemies()
+        {
+            for (int i = 0; i < AdjList.Count; i++)
+            {
+                if (AdjList[i].HasEnemy())
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
 
        public int GetUnvisitedNode()
         {

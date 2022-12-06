@@ -34,8 +34,9 @@ namespace Wizert_Throwback
 
             do
             {
-                wizert.CheckForItems();
                 Console.WriteLine();
+                wizert.CheckForEnemies();
+                wizert.CheckForItems();
                 while (Wizert.IsAlive && !Wizert.HasWon)
                 {
                     Update();
@@ -60,9 +61,10 @@ namespace Wizert_Throwback
 
             do
             {
-                Console.WriteLine("The darkness feels suffocating...");
+                Console.WriteLine("You hastily look around the room, trying to figure out what to do next.");
+                wizert.ListCurrentStats();
                 wizert.ListConnectedRooms();
-                Console.Write("Will you (p)ress on, Wizert? Or (g)ive up? ");
+                Console.Write("Well, Wizert? Will you (p)ress on, or (g)ive up? ");
                 wizertInput = Console.ReadLine();
 
                 switch (wizertInput.ToLower())
@@ -70,8 +72,13 @@ namespace Wizert_Throwback
                     case "p":
                         wizert.Move();
                         wizert.CheckForItems();
+                        wizert.CheckForEnemies();
                         willReprompt = false;
                         break;
+                    /*case "a":
+                        encounters.Encounter();
+                        willReprompt= false; 
+                        break;*/
                     case "g":
                         Console.WriteLine("Until next time...");
                         Environment.Exit(0);
@@ -147,5 +154,6 @@ namespace Wizert_Throwback
     {
         public const int WORLD_SIZE = 25;
         public static readonly NoItems NO_ITEMS = new NoItems();
+        public static readonly NoEnemies NO_ENEMIES = new NoEnemies();
     }
 }

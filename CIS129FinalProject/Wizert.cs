@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 namespace Wizert_Throwback
 {
-    public enum ParseError { ABAPattern, NotNumber, InvalidNumber, Correct, Failure, ListTooLong, RepeatedNumber }
+    public enum ParseError { NotNumber, InvalidNumber, Correct, Failure}
 
     class Wizert
     {
         public int WizertHP = 100;
         public int WizertMP = 200;
-        public int Fireball = 5;
-        public int Heal = 3;
-
+        public int FireballHP = 5;
+        public int FireballMP = 3;
+        public int HealHP = 3;
+        public int HealMP = 5;
 
         public Room CurrRoom { get; private set; }
         public static bool IsAlive { get; private set; }
@@ -38,33 +39,13 @@ namespace Wizert_Throwback
 
         public void Move()
         {
-
             string wizertInput;
             int roomNum = 0;
 
             do
             {
-                Console.Write("Where to?: ");
+                Console.Write("Which room?: ");
                 wizertInput = Console.ReadLine();
-                /*Console.Write("Will you go (N)orth, (E)ast, (S)outh, or (W)est?");
-                wizertInput = Console.ReadLine();
-
-                switch (wizertInput.ToLower())
-                {
-                    case "n":
-                        break;
-                    case "e":
-                        break;
-                    case "s":
-                        break;
-                    case "w":
-                        break;
-                    default:
-                        Console.WriteLine("Invalid command\n");
-                        break;
-                }
-                Console.WriteLine();*/
-
             } while (!IsInputValid(wizertInput, ref roomNum));
            
             Console.WriteLine();
@@ -74,6 +55,11 @@ namespace Wizert_Throwback
         public void ListConnectedRooms()
         {
             CurrRoom.PrintConnectedRooms();
+        }
+
+        public void ListCurrentStats()
+        {
+            Console.WriteLine("HP: " + WizertHP + " MP: " + WizertMP);
         }
 
         private bool IsInputValid(string wizertInput, ref int roomNum)
@@ -106,6 +92,18 @@ namespace Wizert_Throwback
             }
         }
 
+        public void CheckForEnemies()
+        {
+            if (CurrRoom.HasEnemy())
+            {
+                CurrRoom.Enemy.Attack(this);
+            }
+            else
+            {
+                CurrRoom.PrintAdjRoomMessage();
+            }
+        }
+
         private bool TryParse(string input, LinkedList<int> roomIDs)
         {
             char[] splitChars = { ' ' };
@@ -114,24 +112,12 @@ namespace Wizert_Throwback
             ParseError parseError = FindParseError(inputRooms, roomIDs);
             switch (parseError)
             {
-                case ParseError.ABAPattern:
-                    Console.WriteLine("Arrows are not that crooked");
-                    goto case ParseError.Failure;
-
                 case ParseError.InvalidNumber:
-                    Console.WriteLine("Room numbers must be between 0 and 19");
+                    Console.WriteLine("Room numbers must be between 0 and 24");
                     goto case ParseError.Failure;
 
                 case ParseError.NotNumber:
                     Console.WriteLine("Input must be numbers");
-                    goto case ParseError.Failure;
-
-                case ParseError.ListTooLong:
-                    Console.WriteLine("Arrow cannot fly to more than 5 rooms");
-                    goto case ParseError.Failure;
-
-                case ParseError.RepeatedNumber:
-                    Console.WriteLine("Rooms cannot be repeated");
                     goto case ParseError.Failure;
 
                 default:
@@ -154,9 +140,6 @@ namespace Wizert_Throwback
         {
             ParseError result = ParseError.Correct;
 
-            if (inputRooms.Length > 5)
-                return ParseError.ListTooLong;
-
             for (int i = 0; i < inputRooms.Length; i++)
             {
                 int currentElement;
@@ -166,20 +149,6 @@ namespace Wizert_Throwback
                     if (currentElement < 0 || currentElement >= GameConstants.WORLD_SIZE)
                     {
                         result = ParseError.InvalidNumber;
-                        break;
-                    }
-
-                    else if (Dungeon.GetRoomById(currentElement).isVisited)
-                    {
-                        if (currentElement == roomIDs.Last())
-                        {
-                            result = ParseError.RepeatedNumber;
-                        }
-                        else
-                        {
-                            result = ParseError.ABAPattern;
-                        }
-
                         break;
                     }
                     else

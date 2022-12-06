@@ -11,6 +11,9 @@ namespace Wizert_Throwback
         private HashSet<int> doorRooms = new HashSet<int>();
         private HashSet<int> manaRooms = new HashSet<int>(); 
         private HashSet<int> healthRooms = new HashSet<int>();
+        private HashSet<int> bansheeRooms = new HashSet<int>();
+        private HashSet<int> orcRooms = new HashSet<int>();
+        private HashSet<int> goblinRooms = new HashSet<int>();
         public int InitialWizertRoom { get; private set; }
         private Random random = new Random();
 
@@ -26,8 +29,12 @@ namespace Wizert_Throwback
             GenerateDungeonDoor();
             ManaPotionPlacement();
             HealthPotionPlacement();
+            BansheePlacement();
+            OrcPlacement();
+            GoblinPlacement();
             InitialWizertRoom = GenerateWizertRoomNumber();
             SpawnItems();
+            SpawnEnemies();
         }
 
 
@@ -36,6 +43,7 @@ namespace Wizert_Throwback
             for (int i = 0; i < GameConstants.WORLD_SIZE; i++)
             {
                 roomNodes[i].Item = GameConstants.NO_ITEMS;
+                roomNodes[i].Enemy = GameConstants.NO_ENEMIES;
             }
 
             if (resetRooms)
@@ -45,6 +53,7 @@ namespace Wizert_Throwback
             }
 
             SpawnItems();
+            SpawnEnemies();
         }
 
         private void SpawnItems()
@@ -67,6 +76,29 @@ namespace Wizert_Throwback
             {
                 roomNodes[healthRoom].Item = healthPotion;
             }
+        }
+
+        private void SpawnEnemies()
+        {
+            Banshee banshee = new Banshee();
+            Orc orc = new Orc();
+            Goblin goblin = new Goblin();
+
+            foreach (int bansheeRoom in bansheeRooms)
+            {
+                roomNodes[bansheeRoom].Enemy = banshee;
+            }
+            
+            foreach (int orcRoom in orcRooms)
+            {
+                roomNodes[orcRoom].Enemy = orc;
+            }
+
+            foreach (int goblinRoom in goblinRooms)
+            {
+                roomNodes[goblinRoom].Enemy = goblin;
+            }
+
         }
 
         private void GenerateDungeonDoor()
@@ -92,6 +124,33 @@ namespace Wizert_Throwback
             healthRooms.Add(12);
             healthRooms.Add(20);
             healthRooms.Add(24);
+        }
+
+        private void BansheePlacement()
+        {
+            bansheeRooms.Clear();
+            bansheeRooms.Add(2);
+            bansheeRooms.Add(10);
+            bansheeRooms.Add(14);
+            bansheeRooms.Add(22);
+        }
+
+        private void OrcPlacement()
+        {
+            orcRooms.Clear();
+            orcRooms.Add(3);
+            orcRooms.Add(5);
+            orcRooms.Add(19);
+            orcRooms.Add(21);
+        }
+
+        private void GoblinPlacement()
+        {
+            goblinRooms.Clear();
+            goblinRooms.Add(7);
+            goblinRooms.Add(11);
+            goblinRooms.Add(13);
+            goblinRooms.Add(17);
         }
 
         private int GenerateWizertRoomNumber()
